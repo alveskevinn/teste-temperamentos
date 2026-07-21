@@ -3,243 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Teste de Temperamentos — Descubra o seu</title>
+<title>Teste de Temperamentos</title>
 <meta name="description" content="Teste de temperamento em 4 fases e 80 perguntas. Descubra sua combinação entre Sanguíneo, Colérico, Melancólico e Fleumático.">
-<meta name="theme-color" content="#0f1120">
+<meta name="theme-color" content="#f7f5f1">
 <meta property="og:title" content="Teste de Temperamentos">
 <meta property="og:description" content="80 perguntas, 4 fases. Descubra qual das 12 combinações de temperamento é a sua.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23151513'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23f7f5f1' text-anchor='middle'>T</text></svg>">
 <style>
   :root{
-    --bg:#0f1120;
-    --card:rgba(255,255,255,.055);
-    --stroke:rgba(255,255,255,.10);
-    --stroke-2:rgba(255,255,255,.18);
-    --txt:#f2f3f8;
-    --muted:#a2a7bf;
-    --s:#ffa42e;
-    --c:#ff5f5f;
-    --m:#4fb6ef;
-    --f:#b6d95c;
-    --radius:20px;
+    --paper:#f7f5f1;
+    --paper-2:#fffefb;
+    --ink:#1a1917;
+    --ink-2:#4a4842;
+    --ink-3:#8b877d;
+    --rule:#ddd8ce;
+    --rule-2:#c9c3b6;
+    --s:#c47a12;
+    --c:#b23a33;
+    --m:#2f6b96;
+    --f:#5d7a2e;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--bg);color:var(--txt);min-height:100dvh;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+    min-height:100dvh;overflow-x:hidden;
   }
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-1;
-    background:
-      radial-gradient(60vw 60vw at 12% -10%, rgba(255,164,46,.20), transparent 60%),
-      radial-gradient(55vw 55vw at 92% 8%, rgba(255,95,95,.18), transparent 60%),
-      radial-gradient(70vw 70vw at 50% 110%, rgba(79,182,239,.20), transparent 60%),
-      var(--bg);
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px 56px}
+
+  /* ---------- Tipografia ---------- */
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,7.5vw,60px);line-height:1.08;letter-spacing:-.015em;margin:0 0 20px}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+    margin:0 0 26px;font-weight:600;
   }
-  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
+  .lead{font-family:var(--serif);font-size:clamp(17px,3.6vw,20px);line-height:1.62;color:var(--ink-2);margin:0 0 34px;max-width:46ch}
+  .lead b{font-weight:600;color:var(--ink)}
+  .rule{border:0;border-top:1px solid var(--rule);margin:0}
+
+  /* ---------- Botões (mobile primeiro: largura total, alvo alto) ---------- */
+  .btn{
+    display:flex;width:100%;align-items:center;justify-content:center;gap:10px;cursor:pointer;font:inherit;
+    font-size:16px;font-weight:600;min-height:54px;padding:15px 28px;border-radius:2px;
+    background:var(--ink);color:var(--paper-2);border:1px solid var(--ink);
+    transition:background .15s ease,color .15s ease;
+  }
+  .btn:active{background:#000}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule-2)}
+  @media(min-width:640px){
+    .btn{display:inline-flex;width:auto;font-size:15px;min-height:0;padding:15px 30px}
+    .btn:hover{background:#000}
+    .btn.ghost:hover{background:rgba(0,0,0,.04)}
+  }
 
   /* ---------- Intro ---------- */
-  .hero{text-align:center;padding:30px 0 8px;animation:rise .6s ease both}
-  .kicker{
-    display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
-    border:1px solid var(--stroke-2);border-radius:999px;padding:7px 14px;margin-bottom:22px;background:rgba(255,255,255,.04);
-  }
-  h1{
-    font-size:clamp(34px,8vw,58px);line-height:1.05;margin:0 0 16px;letter-spacing:-.03em;font-weight:800;
-    background:linear-gradient(100deg,var(--s),var(--c) 38%,var(--m) 72%,var(--f));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .sub{color:var(--muted);font-size:clamp(15px,3.6vw,18px);line-height:1.6;max-width:54ch;margin:0 auto 30px}
-  .faces{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 32px}
-  .face{border-radius:16px;overflow:hidden;border:1px solid var(--stroke);aspect-ratio:1;background:var(--card);animation:rise .6s ease both}
-  .face:nth-child(1){animation-delay:.05s}
-  .face:nth-child(2){animation-delay:.12s}
-  .face:nth-child(3){animation-delay:.19s}
-  .face:nth-child(4){animation-delay:.26s}
+  .screen{display:none}
+  .screen.on{display:block}
+  /* o quiz ocupa a altura da tela para as respostas ficarem sempre na base */
+  #quiz.on{display:flex;flex-direction:column;min-height:100dvh;margin-bottom:-56px}
+  #quiz .answers{margin-top:auto}
+  @media(min-width:640px){#quiz.on{display:block;min-height:0;margin-bottom:0}#quiz .answers{margin-top:0}}
+  header.top{padding:38px 0 0}
+  .faces{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:0 0 28px}
+  .face{background:var(--paper-2);aspect-ratio:1}
   .face img{width:100%;height:100%;object-fit:cover;display:block}
-
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;font:inherit;
-    font-weight:700;font-size:17px;padding:17px 34px;border-radius:999px;color:#161522;
-    background:linear-gradient(100deg,var(--s),var(--c));box-shadow:0 12px 34px -10px rgba(255,120,60,.65);
-    transition:transform .16s ease,box-shadow .16s ease;
+  .specs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);margin:30px 0 28px}
+  .spec{padding:16px 0 0}
+  .spec dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;font-weight:600}
+  .spec dd{margin:0;font-family:var(--serif);font-size:18px}
+  .fineprint{font-size:13px;color:var(--ink-3);margin-top:18px;line-height:1.6}
+  @media(min-width:640px){
+    header.top{padding:56px 0 0}
+    .faces{grid-template-columns:repeat(4,1fr);margin-bottom:34px}
+    .specs{margin:38px 0 34px}
+    .spec dd{font-size:19px}
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(255,120,60,.75)}
-  .btn:active{transform:translateY(0) scale(.985)}
-  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--stroke-2);box-shadow:none;font-weight:600;font-size:15px;padding:14px 26px}
-  .btn.ghost:hover{background:rgba(255,255,255,.06)}
-  .meta{margin-top:18px;color:var(--muted);font-size:13.5px;line-height:1.6}
 
   /* ---------- Quiz ---------- */
-  .screen{display:none}
-  .screen.on{display:block;animation:rise .45s ease both}
-
   .bar-top{
-    position:sticky;top:0;z-index:20;margin:-28px -20px 22px;padding:16px 20px 14px;
-    background:rgba(15,17,32,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--stroke);
+    position:sticky;top:0;z-index:20;background:var(--paper);
+    border-bottom:1px solid var(--rule);padding:16px 0 12px;margin-bottom:30px;
   }
-  .bar-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;color:var(--muted);margin-bottom:11px}
-  .phase{font-weight:700;color:var(--txt);letter-spacing:-.01em}
-  .track{height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
-  .fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--s),var(--c),var(--m),var(--f));transition:width .4s cubic-bezier(.3,.9,.3,1)}
-  .dots{display:flex;gap:6px;margin-top:11px}
-  .dot{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.10);transition:background .3s}
-  .dot.done{background:rgba(255,255,255,.45)}
-  .dot.now{background:var(--txt)}
+  .bar-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:10px}
+  .phase{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .count{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .track{height:2px;background:var(--rule)}
+  .fill{height:100%;width:0;background:var(--ink);transition:width .28s ease}
 
-  .q-num{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-  .q-card{
-    background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:34px 26px;min-height:190px;
-    display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  .q-index{font-family:var(--serif);font-size:14px;color:var(--ink-3);margin:0 0 14px}
+  .q-text{
+    font-family:var(--serif);font-weight:400;font-size:clamp(25px,6.4vw,38px);line-height:1.26;
+    letter-spacing:-.01em;margin:0 0 30px;
   }
-  .q-text{font-size:clamp(21px,5.2vw,29px);font-weight:700;line-height:1.32;letter-spacing:-.02em;margin:0}
-  .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+
+  /* no celular as respostas ficam ancoradas na base, ao alcance do polegar */
+  .answers{
+    position:sticky;bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    background:var(--paper);padding:12px 0 calc(12px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--rule);
+  }
   .ans{
-    border:1px solid var(--stroke-2);background:rgba(255,255,255,.05);color:var(--txt);border-radius:16px;padding:20px 16px;
-    font:inherit;font-weight:700;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
-    transition:transform .14s ease,background .14s ease,border-color .14s ease;
+    font:inherit;font-size:17px;font-weight:600;min-height:56px;padding:16px 12px;cursor:pointer;border-radius:2px;
+    background:transparent;color:var(--ink);border:1px solid var(--rule-2);
+    transition:background .14s ease,border-color .14s ease,color .14s ease;
   }
-  .ans:hover{transform:translateY(-2px)}
-  .ans.yes:hover,.ans.yes.sel{background:rgba(182,217,92,.16);border-color:rgba(182,217,92,.6)}
-  .ans.no:hover,.ans.no.sel{background:rgba(255,95,95,.14);border-color:rgba(255,95,95,.55)}
-  .ans:active{transform:scale(.98)}
-  .nav{display:flex;justify-content:center;margin-top:20px}
-  .hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px}
+  .ans.sel,.ans:active{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
+  .quiz-foot{display:flex;align-items:center;gap:20px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule)}
+  .back{
+    background:none;border:0;font:inherit;font-size:15px;color:var(--ink-2);cursor:pointer;padding:6px 0;
+    border-bottom:1px solid var(--rule-2);
+  }
+  .keys{display:none;font-size:12.5px;color:var(--ink-3)}
+  .keys kbd{font-family:var(--sans);font-size:11.5px;border:1px solid var(--rule-2);border-radius:2px;padding:1px 5px;color:var(--ink-2)}
+  @media(min-width:640px){
+    .bar-top{padding:18px 0 14px;margin-bottom:44px}
+    .q-text{margin-bottom:44px;min-height:2.4em}
+    .answers{position:static;max-width:420px;gap:12px;padding:0;border-top:0}
+    .ans{font-size:16px;min-height:0;padding:17px 12px}
+    .ans:hover{background:var(--ink);color:var(--paper-2);border-color:var(--ink)}
+    .quiz-foot{margin-top:38px;padding-top:20px}
+    .back:hover{color:var(--ink);border-color:var(--ink)}
+    .keys{display:inline}
+  }
 
   /* ---------- Resultado ---------- */
-  .result-hero{text-align:center;margin-bottom:26px}
-  .result-label{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-  .duo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px}
-  .p-main{
-    width:170px;height:170px;border-radius:26px;object-fit:cover;display:block;border:1px solid var(--stroke-2);
-    box-shadow:0 26px 60px -24px rgba(0,0,0,.85);animation:pop .55s cubic-bezier(.2,1.2,.4,1) both;
+  .res-top{padding:38px 0 0}
+  .duo{display:flex;align-items:flex-end;gap:10px;width:max-content;margin-bottom:26px}
+  .duo img{display:block;object-fit:cover;border:1px solid var(--rule);background:var(--paper-2)}
+  .duo .a{width:126px;height:126px}
+  .duo .b{width:84px;height:84px}
+  .res-name{font-family:var(--serif);font-weight:400;font-size:clamp(32px,7vw,50px);line-height:1.1;letter-spacing:-.015em;margin:0 0 14px}
+  .res-sub{font-size:14px;color:var(--ink-3);margin:0 0 40px}
+  .res-sub b{color:var(--ink-2);font-weight:600}
+
+  section.block{border-top:1px solid var(--rule);padding:30px 0 6px}
+  section.block h2{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 18px}
+  section.block p{font-family:var(--serif);font-size:17.5px;line-height:1.66;color:var(--ink-2);margin:0 0 16px;max-width:56ch}
+  section.block p:last-child{margin-bottom:0}
+
+  .rows{display:grid;gap:20px}
+  .row-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:8px}
+  .row-name{font-family:var(--serif);font-size:19px}
+  .row-tag{display:none;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-left:10px}
+  .row-val{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rtrack{height:6px;background:var(--rule)}
+  .rfill{height:100%;width:0;transition:width .7s ease}
+  .note{font-size:13px;color:var(--ink-3);margin-top:26px;padding-top:20px;border-top:1px solid var(--rule);line-height:1.6;max-width:56ch}
+  @media(min-width:640px){.row-tag{display:inline}}
+
+  .cols{display:grid;grid-template-columns:1fr;gap:26px}
+  @media(min-width:640px){.cols{grid-template-columns:1fr 1fr;gap:34px}}
+  .cols h3{font-size:12.5px;letter-spacing:.06em;color:var(--ink-3);font-weight:600;margin:0 0 12px;text-transform:uppercase}
+  .cols ul{margin:0;padding:0;list-style:none}
+  .cols li{font-family:var(--serif);font-size:16.5px;line-height:1.5;color:var(--ink-2);padding:8px 0;border-top:1px solid var(--rule)}
+  .cols li:first-child{border-top:0;padding-top:0}
+
+  .actions{display:flex;flex-direction:column;gap:12px;margin:32px 0 0;padding-top:26px;border-top:1px solid var(--rule)}
+  @media(min-width:640px){.actions{flex-direction:row;flex-wrap:wrap;gap:14px;margin-top:36px;padding-top:30px}}
+
+  footer{margin-top:56px;padding-top:26px;border-top:1px solid var(--rule)}
+  .sig{font-family:var(--serif);font-size:16px;color:var(--ink-2);margin:0 0 12px}
+  .sig b{font-weight:600;color:var(--ink)}
+  .contact{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;color:var(--ink);
+    border-bottom:1px solid var(--rule-2);padding-bottom:2px;
   }
-  .p-sec{
-    width:104px;height:104px;border-radius:20px;object-fit:cover;display:block;border:1px solid var(--stroke-2);opacity:.9;
-    box-shadow:0 20px 44px -22px rgba(0,0,0,.85);animation:pop .55s .12s cubic-bezier(.2,1.2,.4,1) both;
+  .contact:hover{border-color:var(--ink)}
+  .contact svg{opacity:.75}
+
+  @media(min-width:640px){
+    .wrap{padding:0 24px 72px}
+    .res-top{padding-top:56px}
   }
-  .result-name{font-size:clamp(28px,7vw,42px);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;line-height:1.12}
-  .result-pct{font-size:14.5px;color:var(--muted)}
-  .chip{display:inline-block;border:1px solid var(--stroke-2);border-radius:999px;padding:5px 12px;font-size:13px;margin:0 4px;background:rgba(255,255,255,.04)}
-
-  .panel{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:22px 22px 24px;margin-bottom:16px}
-  .panel h3{margin:0 0 16px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
-  .panel p{margin:0 0 14px;line-height:1.68;color:#dfe2ee;font-size:15.5px}
-  .panel p:last-child{margin-bottom:0}
-
-  .rows{display:grid;gap:15px}
-  .row-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;margin-bottom:7px}
-  .row-head span{color:var(--muted);font-variant-numeric:tabular-nums}
-  .row-head em{font-style:normal;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:8px}
-  .rtrack{height:11px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
-  .rfill{height:100%;width:0;border-radius:99px;transition:width .9s cubic-bezier(.25,.9,.3,1)}
-
-  .traits{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:560px){.traits{grid-template-columns:1fr}}
-  .traits h4{margin:0 0 8px;font-size:13.5px;color:var(--muted);font-weight:700}
-  .traits ul{margin:0;padding-left:19px;line-height:1.75;color:#dfe2ee;font-size:15px}
-  .traits li{margin-bottom:5px}
-  .traits li::marker{color:var(--muted)}
-
-  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-  footer{text-align:center;margin-top:42px}
-  .assinatura{color:var(--muted);font-size:13.5px;margin:0 0 14px;letter-spacing:.01em}
-  .assinatura b{color:var(--txt);font-weight:700}
-  .zap{
-    display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14.5px;font-weight:700;
-    color:#0d2b18;background:linear-gradient(100deg,#4fdc7a,#25d366);border-radius:999px;padding:13px 24px;
-    box-shadow:0 12px 30px -12px rgba(37,211,102,.7);transition:transform .16s ease,box-shadow .16s ease;
-  }
-  .zap:hover{transform:translateY(-2px);box-shadow:0 18px 40px -14px rgba(37,211,102,.85)}
-  .zap:active{transform:translateY(0) scale(.985)}
-
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  @keyframes pop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <!-- INTRO -->
-  <section id="intro" class="screen on">
-    <div class="hero">
-      <span class="kicker">4 fases · 80 perguntas · ~6 min</span>
+  <div id="intro" class="screen on">
+    <header class="top">
+      <p class="eyebrow">Os quatro temperamentos</p>
       <h1>Qual é o seu temperamento?</h1>
-      <p class="sub">Sanguíneo, Colérico, Melancólico ou Fleumático — e principalmente qual das <b>12 combinações</b> é a sua. Responda Sim ou Não com sinceridade, sem pensar demais.</p>
-      <div class="faces">
-        <div class="face"><img src="img/sanguineo.jpg" alt="Sanguíneo"></div>
-        <div class="face"><img src="img/colerico.jpg" alt="Colérico"></div>
-        <div class="face"><img src="img/melancolico.jpg" alt="Melancólico"></div>
-        <div class="face"><img src="img/fleumatico.png" alt="Fleumático"></div>
-      </div>
-      <button class="btn" onclick="iniciar()">Começar o teste →</button>
-      <p class="meta">Nada é enviado para lugar nenhum — tudo roda no seu aparelho.</p>
+      <p class="lead">Sanguíneo, colérico, melancólico ou fleumático — e, sobretudo, qual das <b>doze combinações</b> descreve você. Oitenta perguntas, resposta sim ou não, sem pensar demais.</p>
+    </header>
+
+    <div class="faces">
+      <div class="face"><img src="img/sanguineo.jpg" alt="Sanguíneo"></div>
+      <div class="face"><img src="img/colerico.jpg" alt="Colérico"></div>
+      <div class="face"><img src="img/melancolico.jpg" alt="Melancólico"></div>
+      <div class="face"><img src="img/fleumatico.png" alt="Fleumático"></div>
     </div>
-  </section>
+
+    <button class="btn" onclick="iniciar()">Começar o teste</button>
+
+    <dl class="specs">
+      <div class="spec"><dt>Fases</dt><dd>4</dd></div>
+      <div class="spec"><dt>Perguntas</dt><dd>80</dd></div>
+      <div class="spec"><dt>Duração</dt><dd>6 minutos</dd></div>
+    </dl>
+
+    <p class="fineprint">As respostas não saem do seu aparelho. Nenhum dado é coletado ou enviado.</p>
+  </div>
 
   <!-- QUIZ -->
-  <section id="quiz" class="screen">
+  <div id="quiz" class="screen">
     <div class="bar-top">
       <div class="bar-row">
         <span class="phase" id="faseNome">Fase 1 de 4</span>
-        <span id="contador">1 / 80</span>
+        <span class="count" id="contador">1 / 80</span>
       </div>
       <div class="track"><div class="fill" id="fill"></div></div>
-      <div class="dots" id="dots"></div>
     </div>
 
-    <p class="q-num" id="qNum">Pergunta 1</p>
-    <div class="q-card"><p class="q-text" id="qText">—</p></div>
-    <div class="answers">
-      <button class="ans yes" id="btnSim" onclick="responder(1)"><span>👍</span> Sim</button>
-      <button class="ans no"  id="btnNao" onclick="responder(0)"><span>👎</span> Não</button>
+    <p class="q-index" id="qNum">Pergunta 1</p>
+    <p class="q-text" id="qText">—</p>
+
+    <div class="quiz-foot">
+      <button class="back" id="btnVoltar" onclick="voltar()">Voltar</button>
+      <span class="keys"><kbd>S</kbd> sim · <kbd>N</kbd> não · <kbd>←</kbd> volta</span>
     </div>
-    <div class="nav"><button class="btn ghost" id="btnVoltar" onclick="voltar()">← Voltar</button></div>
-    <p class="hint">Atalhos: <b>S</b> / <b>N</b> · setas · <b>Backspace</b> volta</p>
-  </section>
+
+    <div class="answers">
+      <button class="ans" id="btnSim" onclick="responder(1)">Sim</button>
+      <button class="ans" id="btnNao" onclick="responder(0)">Não</button>
+    </div>
+  </div>
 
   <!-- RESULTADO -->
-  <section id="resultado" class="screen">
-    <div class="result-hero">
-      <p class="result-label">Sua combinação de temperamento</p>
+  <div id="resultado" class="screen">
+    <div class="res-top">
+      <p class="eyebrow">Resultado</p>
       <div class="duo">
-        <img class="p-main" id="rImg1" src="" alt="">
-        <img class="p-sec"  id="rImg2" src="" alt="">
+        <img class="a" id="rImg1" src="" alt="">
+        <img class="b" id="rImg2" src="" alt="">
       </div>
-      <h2 class="result-name" id="rNome">—</h2>
-      <p class="result-pct">
-        <span class="chip" id="chip1">—</span>
-        <span class="chip" id="chip2">—</span>
-      </p>
+      <h1 class="res-name" id="rNome">—</h1>
+      <p class="res-sub" id="rSub">—</p>
     </div>
 
-    <div class="panel">
-      <h3>O que essa combinação diz sobre você</h3>
+    <section class="block">
+      <h2>A combinação</h2>
       <p id="rCombo">—</p>
       <p id="rDesc">—</p>
-    </div>
+    </section>
 
-    <div class="panel">
-      <h3>Sua composição completa</h3>
+    <section class="block">
+      <h2>Composição completa</h2>
       <div class="rows" id="rows"></div>
-      <p style="margin-top:18px;font-size:13.5px;color:var(--muted)">
-        Percentual = respostas “Sim” da fase daquele temperamento ÷ total de “Sim” do teste
-        (<b id="rTotalSim">0</b> de 80).
+      <p class="note">
+        Cada fase do teste corresponde a um temperamento. O percentual é o número de respostas “sim”
+        daquela fase dividido pelo total de “sim” do teste — <b id="rTotalSim">0</b> de 80.
       </p>
-    </div>
+    </section>
 
-    <div class="panel">
-      <h3>Forças e desafios do seu dominante</h3>
-      <div class="traits">
-        <div><h4>Pontos fortes</h4><ul id="rFortes"></ul></div>
-        <div><h4>Pontos de atenção</h4><ul id="rDesafios"></ul></div>
+    <section class="block">
+      <h2>Forças e pontos de atenção</h2>
+      <div class="cols">
+        <div><h3>Forças</h3><ul id="rFortes"></ul></div>
+        <div><h3>Atenção</h3><ul id="rDesafios"></ul></div>
       </div>
-    </div>
+    </section>
 
     <div class="actions">
       <button class="btn" id="btnShare" onclick="compartilhar(this)">Compartilhar resultado</button>
@@ -247,25 +275,25 @@
     </div>
 
     <footer>
-      <p class="assinatura">Desenvolvido por <b>Kevin Alves</b></p>
-      <a class="zap" href="https://wa.me/5511915019683" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true">
+      <p class="sig">Desenvolvido por <b>Kevin Alves</b></p>
+      <a class="contact" href="https://wa.me/5511915019683" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.38-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.86 9.86 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.36c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.25 8.23z"/>
         </svg>
-        Fale comigo no WhatsApp
+        (11) 91501-9683
       </a>
     </footer>
-  </section>
+  </div>
 
 </div>
 
 <script>
 /* ------------------------------------------------------------------
-   Regra de pontuação — fiel à planilha original:
+   Pontuação fiel à planilha original:
    Fase 1 = Sanguíneo · Fase 2 = Colérico · Fase 3 = Melancólico · Fase 4 = Fleumático
-   Pontos do temperamento = nº de "Sim" na sua fase        =COUNTIF(D:D,TRUE)
-   Percentual              = pontos / total de "Sim"        =C14/C23
-   Resultado               = combinação do 1º com o 2º maior
+   Pontos = nº de "Sim" da fase          =COUNTIF(D:D,TRUE)
+   Percentual = pontos / total de "Sim"  =C14/C23
+   Resultado = combinação do 1º com o 2º maior
 ------------------------------------------------------------------ */
 
 const TEMPERAMENTOS = {
@@ -287,30 +315,28 @@ const TEMPERAMENTOS = {
      desafios:["Adia decisões","Evita conflito necessário","Falta de iniciativa própria","Resiste a mudanças","Deixa outros decidirem por você"]}
 };
 
-/* 12 combinações — textos da aba "Temperamentos" da planilha */
 const COMBINACOES = {
-  SC:"Sanguíneo-Colérico é o mais extrovertido e decidido de todas as combinações de temperamento. É constituído pelos dois temperamentos mais extrovertidos.",
-  SM:"Sanguíneo-Melancólico é uma pessoa altamente emocional, rindo num momento e chorando copiosamente noutro. Tem um grande potencial, mas precisa se sentir seguro e admirado pelos outros — na realidade, é isso que impulsiona boa parte das suas realizações.",
-  SF:"Sanguíneo-Fleumático é uma pessoa agradável e de quem é fácil gostar. É de fácil convivência, pois as tendências inconvenientes do sanguíneo são anuladas pela graciosidade do fleumático.",
-  CS:"Colérico-Sanguíneo é o segundo temperamento mais extrovertido das 12 combinações. É uma pessoa completamente ativa e produtiva. Tem opiniões fortes, preconceitos e é teimoso.",
-  CM:"Colérico-Melancólico é uma pessoa habilidosa e capaz. Tem o otimismo e a vertente prática do colérico aliados ao aspecto orientado e detalhista do melancólico.",
-  CF:"Colérico-Fleumático é o extrovertido mais comedido dos coléricos. Combina a atividade e o entusiasmo do colérico com a calma, a indiferença e a baixa estimulação do fleumático.",
-  MS:"Melancólico-Sanguíneo é o temperamento mais inclinado para as artes. É dotado de capacidade comunicativa somada à atenção aos detalhes.",
-  MC:"Melancólico-Colérico é determinado e tem grande força de vontade, vinda do lado colérico, o que estabiliza as mudanças de ânimo típicas do melancólico. Suas principais fraquezas são a mente e a língua.",
-  MF:"Melancólico-Fleumático convive bem com todas as pessoas. É basicamente um introvertido que alia a eficiência organizacional do fleumático ao perfeccionismo analítico do melancólico.",
-  FS:"Fleumático-Sanguíneo é o mais comunicativo das 12 combinações de temperamento. É divertido e bem disposto por natureza.",
-  FC:"Fleumático-Colérico é o mais ativo de todos os fleumáticos. É uma pessoa de fácil convivência, com quem é possível conversar e partilhar.",
-  FM:"Fleumático-Melancólico é considerado o mais quieto e calmo de todas as combinações. É bastante calado, raramente dizendo algo pelo qual tenha de pedir desculpa."
+  SC:"Sanguíneo-colérico é o mais extrovertido e decidido de todas as combinações de temperamento. É constituído pelos dois temperamentos mais extrovertidos.",
+  SM:"Sanguíneo-melancólico é uma pessoa altamente emocional, rindo num momento e chorando copiosamente noutro. Tem grande potencial, mas precisa se sentir seguro e admirado pelos outros — é isso que impulsiona boa parte das suas realizações.",
+  SF:"Sanguíneo-fleumático é uma pessoa agradável e de quem é fácil gostar. É de fácil convivência, pois as tendências inconvenientes do sanguíneo são anuladas pela graciosidade do fleumático.",
+  CS:"Colérico-sanguíneo é o segundo temperamento mais extrovertido das doze combinações. É uma pessoa completamente ativa e produtiva. Tem opiniões fortes, preconceitos e é teimoso.",
+  CM:"Colérico-melancólico é uma pessoa habilidosa e capaz. Tem o otimismo e a vertente prática do colérico aliados ao aspecto orientado e detalhista do melancólico.",
+  CF:"Colérico-fleumático é o extrovertido mais comedido dos coléricos. Combina a atividade e o entusiasmo do colérico com a calma, a indiferença e a baixa estimulação do fleumático.",
+  MS:"Melancólico-sanguíneo é o temperamento mais inclinado para as artes. É dotado de capacidade comunicativa somada à atenção aos detalhes.",
+  MC:"Melancólico-colérico é determinado e tem grande força de vontade, vinda do lado colérico, o que estabiliza as mudanças de ânimo típicas do melancólico. Suas principais fraquezas são a mente e a língua.",
+  MF:"Melancólico-fleumático convive bem com todas as pessoas. É basicamente um introvertido que alia a eficiência organizacional do fleumático ao perfeccionismo analítico do melancólico.",
+  FS:"Fleumático-sanguíneo é o mais comunicativo das doze combinações de temperamento. É divertido e bem disposto por natureza.",
+  FC:"Fleumático-colérico é o mais ativo de todos os fleumáticos. É uma pessoa de fácil convivência, com quem é possível conversar e partilhar.",
+  FM:"Fleumático-melancólico é considerado o mais quieto e calmo de todas as combinações. É bastante calado, raramente dizendo algo pelo qual tenha de pedir desculpa."
 };
 
-/* 4 fases × 20 perguntas — textos da planilha, com ortografia atualizada para pt-BR */
 const FASES = [
   {temp:"S", perguntas:[
     "Gosta de conversar?",
     "Gosta de atividade, de ação?",
     "Emociona-se com facilidade?",
     "“Explode” facilmente?",
-    "Está sempre atualizado nos mais diversos assuntos (cultura geral)?",
+    "Está sempre atualizado nos mais diversos assuntos?",
     "É imaginativo?",
     "Tem inclinação para a crítica e para a ironia?",
     "Tem tendência a mudar de opinião se apresentarem argumentos válidos?",
@@ -333,7 +359,7 @@ const FASES = [
     "Guarda rancor?",
     "Perdoa com facilidade?",
     "É intolerante quando contrariam a sua opinião?",
-    "É obstinado (teimoso, inflexível)?",
+    "É obstinado, teimoso, inflexível?",
     "Tem bastante dificuldade em pedir desculpas?",
     "Quando quer algo, tem tendência a usar meios que não são legítimos?",
     "Na sua mente há sempre uma nova ideia?",
@@ -398,14 +424,11 @@ const FASES = [
 const PERGUNTAS = FASES.flatMap((f, fi) =>
   f.perguntas.map((t, qi) => ({t, temp:f.temp, fase:fi, num:qi + 1}))
 );
-const TOTAL = PERGUNTAS.length; // 80
+const TOTAL = PERGUNTAS.length;
 
 let atual = 0;
 const respostas = new Array(TOTAL).fill(null);
 const $ = id => document.getElementById(id);
-
-// bolinhas de fase
-$('dots').innerHTML = FASES.map(() => '<span class="dot"></span>').join('');
 
 function tela(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
@@ -429,11 +452,6 @@ function render(){
   $('fill').style.width = (atual / TOTAL * 100) + '%';
   $('btnVoltar').style.visibility = atual === 0 ? 'hidden' : 'visible';
 
-  document.querySelectorAll('.dot').forEach((d, i) => {
-    d.className = 'dot' + (i < p.fase ? ' done' : i === p.fase ? ' now' : '');
-  });
-
-  // mostra a resposta já dada, caso o usuário tenha voltado
   const r = respostas[atual];
   $('btnSim').classList.toggle('sel', r === 1);
   $('btnNao').classList.toggle('sel', r === 0);
@@ -455,7 +473,6 @@ function voltar(){
 }
 
 function calcular(){
-  // pontos = "Sim" por fase (COUNTIF da planilha)
   const pontos = {S:0, C:0, M:0, F:0};
   PERGUNTAS.forEach((p, i) => { if(respostas[i] === 1) pontos[p.temp]++; });
 
@@ -465,7 +482,6 @@ function calcular(){
   const pct = {};
   Object.keys(pontos).forEach(k => pct[k] = pontos[k] / base * 100);
 
-  // ordena por pontos; empate resolvido pela ordem clássica S > C > M > F
   const ordemBase = ['S','C','M','F'];
   const ordem = ordemBase.slice().sort((a, b) =>
     (pontos[b] - pontos[a]) || (ordemBase.indexOf(a) - ordemBase.indexOf(b))
@@ -477,13 +493,9 @@ function calcular(){
   $('rImg1').src = dom.img; $('rImg1').alt = dom.nome;
   $('rImg2').src = sec.img; $('rImg2').alt = sec.nome;
 
-  $('rNome').innerHTML =
-    `<span style="color:${dom.cor}">${dom.nome}</span>` +
-    `<span style="color:var(--muted);font-weight:600"> · </span>` +
-    `<span style="color:${sec.cor}">${sec.nome}</span>`;
-
-  $('chip1').textContent = `${dom.nome} ${pct[ordem[0]].toFixed(0)}%`;
-  $('chip2').textContent = `${sec.nome} ${pct[ordem[1]].toFixed(0)}%`;
+  $('rNome').textContent = `${dom.nome}-${sec.nome.toLowerCase()}`;
+  $('rSub').innerHTML =
+    `<b>${dom.nome} ${pct[ordem[0]].toFixed(0)}%</b> · ${sec.nome} ${pct[ordem[1]].toFixed(0)}% — ${dom.tag.toLowerCase()}`;
 
   $('rCombo').textContent = COMBINACOES[ordem[0] + ordem[1]] || '';
   $('rDesc').textContent  = dom.desc;
@@ -496,21 +508,21 @@ function calcular(){
     const t = TEMPERAMENTOS[k];
     return `<div>
       <div class="row-head">
-        <span style="color:${t.cor};font-weight:700">${t.nome}<em>${t.tag}</em></span>
-        <span>${pontos[k]}/20 · ${pct[k].toFixed(1)}%</span>
+        <span><span class="row-name">${t.nome}</span><span class="row-tag">${t.tag}</span></span>
+        <span class="row-val">${pontos[k]}/20 · ${pct[k].toFixed(1)}%</span>
       </div>
       <div class="rtrack"><div class="rfill" data-w="${pct[k]}" style="background:${t.cor}"></div></div>
     </div>`;
   }).join('');
 
   window.__resumo =
-    `Meu temperamento é ${dom.nome}-${sec.nome}. ` +
+    `Meu temperamento é ${dom.nome}-${sec.nome.toLowerCase()}. ` +
     ordem.map(k => `${TEMPERAMENTOS[k].nome} ${pct[k].toFixed(0)}%`).join(' · ');
 
   tela('resultado');
   setTimeout(() => {
     document.querySelectorAll('.rfill').forEach(el => el.style.width = el.dataset.w + '%');
-  }, 140);
+  }, 120);
 }
 
 async function compartilhar(btn){
@@ -521,7 +533,7 @@ async function compartilhar(btn){
   try {
     await navigator.clipboard.writeText(texto);
     const old = btn.textContent;
-    btn.textContent = 'Copiado! ✓';
+    btn.textContent = 'Copiado';
     setTimeout(() => btn.textContent = old, 1800);
   } catch(e){}
 }
