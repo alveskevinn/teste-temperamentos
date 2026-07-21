@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teste de Temperamentos — Descubra o seu</title>
+<meta name="description" content="Teste de temperamento em 4 fases e 80 perguntas. Descubra sua combinação entre Sanguíneo, Colérico, Melancólico e Fleumático.">
+<meta name="theme-color" content="#0f1120">
+<meta property="og:title" content="Teste de Temperamentos">
+<meta property="og:description" content="80 perguntas, 4 fases. Descubra qual das 12 combinações de temperamento é a sua.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<style>
+  :root{
+    --bg:#0f1120;
+    --card:rgba(255,255,255,.055);
+    --stroke:rgba(255,255,255,.10);
+    --stroke-2:rgba(255,255,255,.18);
+    --txt:#f2f3f8;
+    --muted:#a2a7bf;
+    --s:#ffa42e;
+    --c:#ff5f5f;
+    --m:#4fb6ef;
+    --f:#b6d95c;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--txt);min-height:100dvh;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;
+    background:
+      radial-gradient(60vw 60vw at 12% -10%, rgba(255,164,46,.20), transparent 60%),
+      radial-gradient(55vw 55vw at 92% 8%, rgba(255,95,95,.18), transparent 60%),
+      radial-gradient(70vw 70vw at 50% 110%, rgba(79,182,239,.20), transparent 60%),
+      var(--bg);
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
+
+  /* ---------- Intro ---------- */
+  .hero{text-align:center;padding:30px 0 8px;animation:rise .6s ease both}
+  .kicker{
+    display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--stroke-2);border-radius:999px;padding:7px 14px;margin-bottom:22px;background:rgba(255,255,255,.04);
+  }
+  h1{
+    font-size:clamp(34px,8vw,58px);line-height:1.05;margin:0 0 16px;letter-spacing:-.03em;font-weight:800;
+    background:linear-gradient(100deg,var(--s),var(--c) 38%,var(--m) 72%,var(--f));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{color:var(--muted);font-size:clamp(15px,3.6vw,18px);line-height:1.6;max-width:54ch;margin:0 auto 30px}
+  .faces{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 32px}
+  .face{border-radius:16px;overflow:hidden;border:1px solid var(--stroke);aspect-ratio:1;background:var(--card);animation:rise .6s ease both}
+  .face:nth-child(1){animation-delay:.05s}
+  .face:nth-child(2){animation-delay:.12s}
+  .face:nth-child(3){animation-delay:.19s}
+  .face:nth-child(4){animation-delay:.26s}
+  .face img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;font:inherit;
+    font-weight:700;font-size:17px;padding:17px 34px;border-radius:999px;color:#161522;
+    background:linear-gradient(100deg,var(--s),var(--c));box-shadow:0 12px 34px -10px rgba(255,120,60,.65);
+    transition:transform .16s ease,box-shadow .16s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(255,120,60,.75)}
+  .btn:active{transform:translateY(0) scale(.985)}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--stroke-2);box-shadow:none;font-weight:600;font-size:15px;padding:14px 26px}
+  .btn.ghost:hover{background:rgba(255,255,255,.06)}
+  .meta{margin-top:18px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+  /* ---------- Quiz ---------- */
+  .screen{display:none}
+  .screen.on{display:block;animation:rise .45s ease both}
+
+  .bar-top{
+    position:sticky;top:0;z-index:20;margin:-28px -20px 22px;padding:16px 20px 14px;
+    background:rgba(15,17,32,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--stroke);
+  }
+  .bar-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;color:var(--muted);margin-bottom:11px}
+  .phase{font-weight:700;color:var(--txt);letter-spacing:-.01em}
+  .track{height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+  .fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--s),var(--c),var(--m),var(--f));transition:width .4s cubic-bezier(.3,.9,.3,1)}
+  .dots{display:flex;gap:6px;margin-top:11px}
+  .dot{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.10);transition:background .3s}
+  .dot.done{background:rgba(255,255,255,.45)}
+  .dot.now{background:var(--txt)}
+
+  .q-num{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .q-card{
+    background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:34px 26px;min-height:190px;
+    display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  }
+  .q-text{font-size:clamp(21px,5.2vw,29px);font-weight:700;line-height:1.32;letter-spacing:-.02em;margin:0}
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .ans{
+    border:1px solid var(--stroke-2);background:rgba(255,255,255,.05);color:var(--txt);border-radius:16px;padding:20px 16px;
+    font:inherit;font-weight:700;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+    transition:transform .14s ease,background .14s ease,border-color .14s ease;
+  }
+  .ans:hover{transform:translateY(-2px)}
+  .ans.yes:hover,.ans.yes.sel{background:rgba(182,217,92,.16);border-color:rgba(182,217,92,.6)}
+  .ans.no:hover,.ans.no.sel{background:rgba(255,95,95,.14);border-color:rgba(255,95,95,.55)}
+  .ans:active{transform:scale(.98)}
+  .nav{display:flex;justify-content:center;margin-top:20px}
+  .hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px}
+
+  /* ---------- Resultado ---------- */
+  .result-hero{text-align:center;margin-bottom:26px}
+  .result-label{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .duo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px}
+  .p-main{
+    width:170px;height:170px;border-radius:26px;object-fit:cover;display:block;border:1px solid var(--stroke-2);
+    box-shadow:0 26px 60px -24px rgba(0,0,0,.85);animation:pop .55s cubic-bezier(.2,1.2,.4,1) both;
+  }
+  .p-sec{
+    width:104px;height:104px;border-radius:20px;object-fit:cover;display:block;border:1px solid var(--stroke-2);opacity:.9;
+    box-shadow:0 20px 44px -22px rgba(0,0,0,.85);animation:pop .55s .12s cubic-bezier(.2,1.2,.4,1) both;
+  }
+  .result-name{font-size:clamp(28px,7vw,42px);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;line-height:1.12}
+  .result-pct{font-size:14.5px;color:var(--muted)}
+  .chip{display:inline-block;border:1px solid var(--stroke-2);border-radius:999px;padding:5px 12px;font-size:13px;margin:0 4px;background:rgba(255,255,255,.04)}
+
+  .panel{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:22px 22px 24px;margin-bottom:16px}
+  .panel h3{margin:0 0 16px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .panel p{margin:0 0 14px;line-height:1.68;color:#dfe2ee;font-size:15.5px}
+  .panel p:last-child{margin-bottom:0}
+
+  .rows{display:grid;gap:15px}
+  .row-head{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;margin-bottom:7px}
+  .row-head span{color:var(--muted);font-variant-numeric:tabular-nums}
+  .row-head em{font-style:normal;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:8px}
+  .rtrack{height:11px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+  .rfill{height:100%;width:0;border-radius:99px;transition:width .9s cubic-bezier(.25,.9,.3,1)}
+
+  .traits{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.traits{grid-template-columns:1fr}}
+  .traits h4{margin:0 0 8px;font-size:13.5px;color:var(--muted);font-weight:700}
+  .traits ul{margin:0;padding-left:19px;line-height:1.75;color:#dfe2ee;font-size:15px}
+  .traits li{margin-bottom:5px}
+  .traits li::marker{color:var(--muted)}
+
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:38px;line-height:1.75}
+  footer a{color:var(--muted)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes pop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro" class="screen on">
+    <div class="hero">
+      <span class="kicker">4 fases · 80 perguntas · ~6 min</span>
+      <h1>Qual é o seu temperamento?</h1>
+      <p class="sub">Sanguíneo, Colérico, Melancólico ou Fleumático — e principalmente qual das <b>12 combinações</b> é a sua. Responda Sim ou Não com sinceridade, sem pensar demais.</p>
+      <div class="faces">
+        <div class="face"><img src="img/sanguineo.jpg" alt="Sanguíneo"></div>
+        <div class="face"><img src="img/colerico.jpg" alt="Colérico"></div>
+        <div class="face"><img src="img/melancolico.jpg" alt="Melancólico"></div>
+        <div class="face"><img src="img/fleumatico.png" alt="Fleumático"></div>
+      </div>
+      <button class="btn" onclick="iniciar()">Começar o teste →</button>
+      <p class="meta">Nada é enviado para lugar nenhum — tudo roda no seu aparelho.</p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="bar-top">
+      <div class="bar-row">
+        <span class="phase" id="faseNome">Fase 1 de 4</span>
+        <span id="contador">1 / 80</span>
+      </div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <p class="q-num" id="qNum">Pergunta 1</p>
+    <div class="q-card"><p class="q-text" id="qText">—</p></div>
+    <div class="answers">
+      <button class="ans yes" id="btnSim" onclick="responder(1)"><span>👍</span> Sim</button>
+      <button class="ans no"  id="btnNao" onclick="responder(0)"><span>👎</span> Não</button>
+    </div>
+    <div class="nav"><button class="btn ghost" id="btnVoltar" onclick="voltar()">← Voltar</button></div>
+    <p class="hint">Atalhos: <b>S</b> / <b>N</b> · setas · <b>Backspace</b> volta</p>
+  </section>
+
+  <!-- RESULTADO -->
+  <section id="resultado" class="screen">
+    <div class="result-hero">
+      <p class="result-label">Sua combinação de temperamento</p>
+      <div class="duo">
+        <img class="p-main" id="rImg1" src="" alt="">
+        <img class="p-sec"  id="rImg2" src="" alt="">
+      </div>
+      <h2 class="result-name" id="rNome">—</h2>
+      <p class="result-pct">
+        <span class="chip" id="chip1">—</span>
+        <span class="chip" id="chip2">—</span>
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>O que essa combinação diz sobre você</h3>
+      <p id="rCombo">—</p>
+      <p id="rDesc">—</p>
+    </div>
+
+    <div class="panel">
+      <h3>Sua composição completa</h3>
+      <div class="rows" id="rows"></div>
+      <p style="margin-top:18px;font-size:13.5px;color:var(--muted)">
+        Percentual = respostas “Sim” da fase daquele temperamento ÷ total de “Sim” do teste
+        (<b id="rTotalSim">0</b> de 80).
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Forças e desafios do seu dominante</h3>
+      <div class="traits">
+        <div><h4>Pontos fortes</h4><ul id="rFortes"></ul></div>
+        <div><h4>Pontos de atenção</h4><ul id="rDesafios"></ul></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btnShare" onclick="compartilhar(this)">Compartilhar resultado</button>
+      <button class="btn ghost" onclick="reiniciar()">Refazer o teste</button>
+    </div>
+
+    <footer>
+      Teste baseado na teoria clássica dos quatro temperamentos.<br>
+      Fonte original: planilha de Marcos Turim (Turim Admin) · conteúdo de educamais.com<br>
+      Ferramenta de autoconhecimento — não substitui avaliação psicológica.
+    </footer>
+  </section>
+
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Regra de pontuação — fiel à planilha original:
+   Fase 1 = Sanguíneo · Fase 2 = Colérico · Fase 3 = Melancólico · Fase 4 = Fleumático
+   Pontos do temperamento = nº de "Sim" na sua fase        =COUNTIF(D:D,TRUE)
+   Percentual              = pontos / total de "Sim"        =C14/C23
+   Resultado               = combinação do 1º com o 2º maior
+------------------------------------------------------------------ */
+
+const TEMPERAMENTOS = {
+  S:{nome:"Sanguíneo", tag:"O popular brincalhão", cor:"var(--s)", img:"img/sanguineo.jpg",
+     desc:"Você é energia em movimento: fala fácil, faz amizade em qualquer lugar e contagia quem está por perto. Vive o presente com intensidade e se emociona rápido. O desafio é a constância — começar é a sua praia, terminar é o seu treino.",
+     fortes:["Carismático e comunicativo","Otimista por natureza","Faz amizades com facilidade","Criativo e espontâneo","Perdoa rápido, não guarda mágoa"],
+     desafios:["Se dispersa com facilidade","Deixa coisas pela metade","Desorganizado no dia a dia","Fala antes de pensar","Depende de aprovação dos outros"]},
+  C:{nome:"Colérico", tag:"Um líder poderoso", cor:"var(--c)", img:"img/colerico.jpg",
+     desc:"Você nasceu para puxar a fila: decide rápido, não trava diante de problema e tem uma vontade que atravessa parede. Onde tem meta, você chega. O desafio é a temperatura — firmeza demais vira dureza e nem todo mundo acompanha o seu ritmo.",
+     fortes:["Determinado e prático","Decide sob pressão","Líder natural","Não desiste no primeiro tropeço","Foco total em resultado"],
+     desafios:["Explode com facilidade","Teimoso e intolerante","Custa a pedir desculpas","Pouco paciente com os outros","Passa por cima em nome da meta"]},
+  M:{nome:"Melancólico", tag:"O sensível e perfeccionista", cor:"var(--m)", img:"img/melancolico.jpg",
+     desc:"Você enxerga o que quase ninguém vê: analisa, sente fundo, cuida do detalhe e não entrega nada mal feito. Sua profundidade é rara — e cobra caro. O desafio é soltar: nem tudo precisa ser perfeito, nem toda mágoa precisa ser guardada.",
+     fortes:["Analítico e detalhista","Profundo e leal","Sensível ao outro","Organizado e pontual","Comprometido de verdade"],
+     desafios:["Perfeccionismo que trava","Tende ao pessimismo","Guarda rancor por tempo demais","Se cobra em excesso","Se fecha quando magoado"]},
+  F:{nome:"Fleumático", tag:"O calmo e pacifista", cor:"var(--f)", img:"img/fleumatico.png",
+     desc:"Você é o ponto de equilíbrio: nada te tira do sério fácil, ouve antes de julgar e apaga incêndio só com a sua presença. Constante e confiável. O desafio é a iniciativa — evitar conflito o tempo todo às vezes é abrir mão do que você quer.",
+     fortes:["Calmo sob qualquer pressão","Ótimo mediador de conflitos","Paciente e constante","Sabe ouvir e guardar segredo","Confiável no longo prazo"],
+     desafios:["Adia decisões","Evita conflito necessário","Falta de iniciativa própria","Resiste a mudanças","Deixa outros decidirem por você"]}
+};
+
+/* 12 combinações — textos da aba "Temperamentos" da planilha */
+const COMBINACOES = {
+  SC:"Sanguíneo-Colérico é o mais extrovertido e decidido de todas as combinações de temperamento. É constituído pelos dois temperamentos mais extrovertidos.",
+  SM:"Sanguíneo-Melancólico é uma pessoa altamente emocional, rindo num momento e chorando copiosamente noutro. Tem um grande potencial, mas precisa se sentir seguro e admirado pelos outros — na realidade, é isso que impulsiona boa parte das suas realizações.",
+  SF:"Sanguíneo-Fleumático é uma pessoa agradável e de quem é fácil gostar. É de fácil convivência, pois as tendências inconvenientes do sanguíneo são anuladas pela graciosidade do fleumático.",
+  CS:"Colérico-Sanguíneo é o segundo temperamento mais extrovertido das 12 combinações. É uma pessoa completamente ativa e produtiva. Tem opiniões fortes, preconceitos e é teimoso.",
+  CM:"Colérico-Melancólico é uma pessoa habilidosa e capaz. Tem o otimismo e a vertente prática do colérico aliados ao aspecto orientado e detalhista do melancólico.",
+  CF:"Colérico-Fleumático é o extrovertido mais comedido dos coléricos. Combina a atividade e o entusiasmo do colérico com a calma, a indiferença e a baixa estimulação do fleumático.",
+  MS:"Melancólico-Sanguíneo é o temperamento mais inclinado para as artes. É dotado de capacidade comunicativa somada à atenção aos detalhes.",
+  MC:"Melancólico-Colérico é determinado e tem grande força de vontade, vinda do lado colérico, o que estabiliza as mudanças de ânimo típicas do melancólico. Suas principais fraquezas são a mente e a língua.",
+  MF:"Melancólico-Fleumático convive bem com todas as pessoas. É basicamente um introvertido que alia a eficiência organizacional do fleumático ao perfeccionismo analítico do melancólico.",
+  FS:"Fleumático-Sanguíneo é o mais comunicativo das 12 combinações de temperamento. É divertido e bem disposto por natureza.",
+  FC:"Fleumático-Colérico é o mais ativo de todos os fleumáticos. É uma pessoa de fácil convivência, com quem é possível conversar e partilhar.",
+  FM:"Fleumático-Melancólico é considerado o mais quieto e calmo de todas as combinações. É bastante calado, raramente dizendo algo pelo qual tenha de pedir desculpa."
+};
+
+/* 4 fases × 20 perguntas — textos da planilha, com ortografia atualizada para pt-BR */
+const FASES = [
+  {temp:"S", perguntas:[
+    "Gosta de conversar?",
+    "Gosta de atividade, de ação?",
+    "Emociona-se com facilidade?",
+    "“Explode” facilmente?",
+    "Está sempre atualizado nos mais diversos assuntos (cultura geral)?",
+    "É imaginativo?",
+    "Tem inclinação para a crítica e para a ironia?",
+    "Tem tendência a mudar de opinião se apresentarem argumentos válidos?",
+    "Quando lhe pedem desculpas, reconcilia-se com facilidade?",
+    "Tem dificuldade em perdoar ou esquecer?",
+    "Gosta de fazer o bem sempre que pode?",
+    "Aflige-se facilmente com os males do próximo?",
+    "É mais otimista do que pessimista?",
+    "Ri com facilidade quando há motivo?",
+    "É uma pessoa inconstante, pouco perseverante?",
+    "Prefere que sejam outros a resolver os problemas?",
+    "Aceita facilmente novas ordens que lhe são dadas?",
+    "Gosta de novidades?",
+    "Gosta de andar elegante, bem vestido?",
+    "Gosta de ser admirado e elogiado pelos outros?"
+  ]},
+  {temp:"C", perguntas:[
+    "Irrita-se com facilidade?",
+    "Nota-se quando você está irritado?",
+    "Guarda rancor?",
+    "Perdoa com facilidade?",
+    "É intolerante quando contrariam a sua opinião?",
+    "É obstinado (teimoso, inflexível)?",
+    "Tem bastante dificuldade em pedir desculpas?",
+    "Quando quer algo, tem tendência a usar meios que não são legítimos?",
+    "Na sua mente há sempre uma nova ideia?",
+    "Ama os outros com facilidade?",
+    "Tem dificuldade em se apaixonar por algo ou alguém?",
+    "Prefere demonstrar em privado os seus afetos?",
+    "Gosta de estudar as matérias teóricas?",
+    "Raciocina com firmeza?",
+    "Gosta de ser pontual?",
+    "Gosta de saber os motivos de um dever, de uma obrigação?",
+    "Tem dificuldade em tomar decisões de ordem afetiva e sentimental?",
+    "Admira-se a si mesmo?",
+    "Anseia por novidades?",
+    "Aceita com facilidade as notícias e ordens que lhe dão?"
+  ]},
+  {temp:"M", perguntas:[
+    "Caminha devagar?",
+    "É observador?",
+    "Pensa duas vezes antes de tomar uma decisão?",
+    "Aprecia as belezas da natureza?",
+    "Prefere a solidão à agitação das multidões?",
+    "Gosta de novidades?",
+    "Gosta de praticar esporte?",
+    "Gosta de música?",
+    "Sabe guardar segredos?",
+    "Precisa de motivação externa para realizar os seus próprios sonhos?",
+    "É teimoso com certos pontos de vista?",
+    "Apaixona-se facilmente por pessoas ou coisas ao seu redor?",
+    "É atencioso e cordial com os outros?",
+    "Gosta de ler?",
+    "Costuma ser indeciso?",
+    "Costuma encontrar o lado positivo em todas as situações?",
+    "Costuma pensar, meditar?",
+    "Gosta de dar gargalhadas em público?",
+    "Por vezes fica alheio ao ambiente onde vive?",
+    "Costuma guardar ressentimento?"
+  ]},
+  {temp:"F", perguntas:[
+    "Prefere ler um livro a dar um passeio no campo?",
+    "É uma pessoa calma, não se zanga com facilidade?",
+    "Tem dificuldade em se emocionar em público?",
+    "Para você, qualquer roupa serve?",
+    "Gosta de falar bem dos outros?",
+    "Costuma ser paciente se tem de recomeçar o que não deu certo?",
+    "Pondera várias opções, mesmo nas horas de estresse?",
+    "Aprecia momentos tranquilos, sem muita ação?",
+    "Gosta de fugir às suas responsabilidades?",
+    "Costuma ter os seus aposentos desarrumados?",
+    "Sente dificuldade em demonstrar quando gosta de alguém?",
+    "Tem dificuldade em cultivar novas amizades?",
+    "Mantém-se calmo perante agressões físicas, verbais ou mentais?",
+    "Prefere opções com resultados comprovados, não gosta de inovações?",
+    "Está sempre pronto para recomeçar outro projeto, mesmo que tenha tido uma derrota?",
+    "Dá pouca importância aos comentários dos outros, tem boa autoestima?",
+    "Perdoa com facilidade e não é vingativo?",
+    "Acha que a sua vontade tem menos valor que a dos outros?",
+    "O seu lema é: primeiro os meus interesses, depois os dos outros?",
+    "Conforma-se com a rotina da vida?"
+  ]}
+];
+
+const PERGUNTAS = FASES.flatMap((f, fi) =>
+  f.perguntas.map((t, qi) => ({t, temp:f.temp, fase:fi, num:qi + 1}))
+);
+const TOTAL = PERGUNTAS.length; // 80
+
+let atual = 0;
+const respostas = new Array(TOTAL).fill(null);
+const $ = id => document.getElementById(id);
+
+// bolinhas de fase
+$('dots').innerHTML = FASES.map(() => '<span class="dot"></span>').join('');
+
+function tela(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  $(id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function iniciar(){
+  atual = 0;
+  respostas.fill(null);
+  tela('quiz');
+  render();
+}
+
+function render(){
+  const p = PERGUNTAS[atual];
+  $('faseNome').textContent = `Fase ${p.fase + 1} de 4`;
+  $('contador').textContent = `${atual + 1} / ${TOTAL}`;
+  $('qNum').textContent = `Pergunta ${p.num} da fase`;
+  $('qText').textContent = p.t;
+  $('fill').style.width = (atual / TOTAL * 100) + '%';
+  $('btnVoltar').style.visibility = atual === 0 ? 'hidden' : 'visible';
+
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.className = 'dot' + (i < p.fase ? ' done' : i === p.fase ? ' now' : '');
+  });
+
+  // mostra a resposta já dada, caso o usuário tenha voltado
+  const r = respostas[atual];
+  $('btnSim').classList.toggle('sel', r === 1);
+  $('btnNao').classList.toggle('sel', r === 0);
+}
+
+function responder(v){
+  respostas[atual] = v;
+  if(atual < TOTAL - 1){
+    atual++;
+    render();
+  } else {
+    $('fill').style.width = '100%';
+    calcular();
+  }
+}
+
+function voltar(){
+  if(atual > 0){ atual--; render(); }
+}
+
+function calcular(){
+  // pontos = "Sim" por fase (COUNTIF da planilha)
+  const pontos = {S:0, C:0, M:0, F:0};
+  PERGUNTAS.forEach((p, i) => { if(respostas[i] === 1) pontos[p.temp]++; });
+
+  const totalSim = pontos.S + pontos.C + pontos.M + pontos.F;
+  const base = totalSim || 1;
+
+  const pct = {};
+  Object.keys(pontos).forEach(k => pct[k] = pontos[k] / base * 100);
+
+  // ordena por pontos; empate resolvido pela ordem clássica S > C > M > F
+  const ordemBase = ['S','C','M','F'];
+  const ordem = ordemBase.slice().sort((a, b) =>
+    (pontos[b] - pontos[a]) || (ordemBase.indexOf(a) - ordemBase.indexOf(b))
+  );
+
+  const dom = TEMPERAMENTOS[ordem[0]];
+  const sec = TEMPERAMENTOS[ordem[1]];
+
+  $('rImg1').src = dom.img; $('rImg1').alt = dom.nome;
+  $('rImg2').src = sec.img; $('rImg2').alt = sec.nome;
+
+  $('rNome').innerHTML =
+    `<span style="color:${dom.cor}">${dom.nome}</span>` +
+    `<span style="color:var(--muted);font-weight:600"> · </span>` +
+    `<span style="color:${sec.cor}">${sec.nome}</span>`;
+
+  $('chip1').textContent = `${dom.nome} ${pct[ordem[0]].toFixed(0)}%`;
+  $('chip2').textContent = `${sec.nome} ${pct[ordem[1]].toFixed(0)}%`;
+
+  $('rCombo').textContent = COMBINACOES[ordem[0] + ordem[1]] || '';
+  $('rDesc').textContent  = dom.desc;
+  $('rTotalSim').textContent = totalSim;
+
+  $('rFortes').innerHTML   = dom.fortes.map(t => `<li>${t}</li>`).join('');
+  $('rDesafios').innerHTML = dom.desafios.map(t => `<li>${t}</li>`).join('');
+
+  $('rows').innerHTML = ordem.map(k => {
+    const t = TEMPERAMENTOS[k];
+    return `<div>
+      <div class="row-head">
+        <span style="color:${t.cor};font-weight:700">${t.nome}<em>${t.tag}</em></span>
+        <span>${pontos[k]}/20 · ${pct[k].toFixed(1)}%</span>
+      </div>
+      <div class="rtrack"><div class="rfill" data-w="${pct[k]}" style="background:${t.cor}"></div></div>
+    </div>`;
+  }).join('');
+
+  window.__resumo =
+    `Meu temperamento é ${dom.nome}-${sec.nome}. ` +
+    ordem.map(k => `${TEMPERAMENTOS[k].nome} ${pct[k].toFixed(0)}%`).join(' · ');
+
+  tela('resultado');
+  setTimeout(() => {
+    document.querySelectorAll('.rfill').forEach(el => el.style.width = el.dataset.w + '%');
+  }, 140);
+}
+
+async function compartilhar(btn){
+  const texto = window.__resumo + '\n\nFaça o teste: ' + location.href;
+  if(navigator.share){
+    try { await navigator.share({title:'Teste de Temperamentos', text:texto}); return; } catch(e){ /* cancelado */ }
+  }
+  try {
+    await navigator.clipboard.writeText(texto);
+    const old = btn.textContent;
+    btn.textContent = 'Copiado! ✓';
+    setTimeout(() => btn.textContent = old, 1800);
+  } catch(e){}
+}
+
+function reiniciar(){ tela('intro'); }
+
+document.addEventListener('keydown', e => {
+  if(!$('quiz').classList.contains('on')) return;
+  const k = e.key.toLowerCase();
+  if(k === 's' || k === 'y' || k === 'arrowright' || k === '1') responder(1);
+  if(k === 'n' || k === 'arrowleft'  || k === '2') responder(0);
+  if(k === 'backspace'){ e.preventDefault(); voltar(); }
+});
+</script>
+</body>
+</html>
